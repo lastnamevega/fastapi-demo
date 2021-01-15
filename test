@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+pytest --disable-warnings src/tests
