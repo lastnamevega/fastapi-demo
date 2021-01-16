@@ -1,5 +1,5 @@
-import pytest
 from ...lib.fibonacci import fibonacci
+import pytest
 
 
 @pytest.mark.parametrize('input, output', [

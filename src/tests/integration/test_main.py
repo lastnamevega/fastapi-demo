@@ -30,11 +30,14 @@ def test_calculate_fibonacci(input, output):
 
 
 def test_fibonacci_less_than():
-    num = -1
-    response = client.get(f'/fibonacci/{num}')
+    input = -1
+    response = client.get(f'/fibonacci/{input}')
 
     assert response.status_code == 400
-    assert response.json() == {'detail': f'{num} less than 0'}
+    assert response.json() == {
+        'input': input,
+        'output': f'{input} less than 0'
+    }
 
 
 def test_fibonacci_invalid():
