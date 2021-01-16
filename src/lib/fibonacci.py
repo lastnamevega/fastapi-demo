@@ -1,9 +1,10 @@
-def fibonacci(num: int):
-    if num < 0:
-        raise ValueError(f'{num} less than min of 0')
-    elif num > 20:
-        raise ValueError(f'{num} greater than max of 20')
-    elif num < 3:
-        return 1
+def fibonacci(desired_index: int):
+    if desired_index < 0:
+        raise ValueError(f'{desired_index} less than 0')
 
-    return (fibonacci(num - 1) + fibonacci(num - 2))
+    values = [0, 1]
+
+    for i in range(2, desired_index + 1):
+        values.append(values[i - 1] + values[i - 2])
+
+    return values[desired_index]

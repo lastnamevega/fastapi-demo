@@ -12,20 +12,20 @@ def test_get_root():
     assert response.json() == {'message': 'hello, world'}
 
 
-@pytest.mark.parametrize('number, result', [
-    (0, 1),
+@pytest.mark.parametrize('input, output', [
+    (0, 0),
     (1, 1),
     (2, 1),
     (3, 2),
-    (20, 6765),
+    (99, 218922995834555169026),
 ])
-def test_calculate_fibonacci(number, result):
-    response = client.get(f'/fibonacci/{number}')
+def test_calculate_fibonacci(input, output):
+    response = client.get(f'/fibonacci/{input}')
 
     assert response.status_code == 200
     assert response.json() == {
-        'number': number,
-        'result': result
+        'input': input,
+        'output': output
     }
 
 
@@ -34,15 +34,20 @@ def test_fibonacci_less_than():
     response = client.get(f'/fibonacci/{num}')
 
     assert response.status_code == 400
-    assert response.json() == {'detail': f'{num} less than min of 0'}
+    assert response.json() == {'detail': f'{num} less than 0'}
 
 
-def test_fibonacci_greater_than():
-    num = 21
-    response = client.get(f'/fibonacci/{num}')
+def test_fibonacci_invalid():
+    response = client.get(f'/fibonacci/invalid-input')
 
-    assert response.status_code == 400
-    assert response.json() == {'detail': f'{num} greater than max of 20'}
+    assert response.status_code == 422
+    assert response.json() == {
+        'detail': [{
+            'loc': ['path', 'input'],
+            'msg':'value is not a valid integer',
+            'type':'type_error.integer'
+        }]
+    }
 
 
 def test_not_found():
