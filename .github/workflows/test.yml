@@ -24,3 +24,4 @@ jobs:
             ${{ runner.os }}-
       - run: ./setup
       - run: source venv/bin/activate && ./test
+      - run: source venv/bin/activate && ./coverage

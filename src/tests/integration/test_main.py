@@ -12,15 +12,15 @@ def test_get_root():
     assert response.json() == {'message': 'hello, world'}
 
 
-@pytest.mark.parametrize('input, output', [
-    (0, 0),
-    (1, 1),
-    (2, 1),
-    (3, 2),
-    (99, 218922995834555169026),
+@pytest.mark.parametrize('endpoint, input, output', [
+    ('fibonacci', 99, 218922995834555169026),
+    ('fizzbuzz', 14, 14),
+    ('fizzbuzz', 40, 'buzz'),
+    ('fizzbuzz', 60, 'fizzbuzz'),
+    ('fizzbuzz', 9, 'fizz'),
 ])
-def test_calculate_fibonacci(input, output):
-    response = client.get(f'/fibonacci/{input}')
+def test_calculate(endpoint, input, output):
+    response = client.get(f'/{endpoint}/{input}')
 
     assert response.status_code == 200
     assert response.json() == {
@@ -29,19 +29,22 @@ def test_calculate_fibonacci(input, output):
     }
 
 
-def test_fibonacci_less_than():
-    input = -1
-    response = client.get(f'/fibonacci/{input}')
+@pytest.mark.parametrize('endpoint, input', [
+    ('fibonacci', -1), ('fizzbuzz', 0)
+])
+def test_less_than(endpoint, input):
+    response = client.get(f'/{endpoint}/{input}')
 
     assert response.status_code == 400
     assert response.json() == {
         'input': input,
-        'output': f'{input} less than 0'
+        'output': f'{input} is less than {input + 1}'
     }
 
 
-def test_fibonacci_invalid():
-    response = client.get(f'/fibonacci/invalid-input')
+@pytest.mark.parametrize('endpoint', ['fibonacci', 'fizzbuzz'])
+def test_invalid(endpoint):
+    response = client.get(f'/{endpoint}/invalid-input')
 
     assert response.status_code == 422
     assert response.json() == {

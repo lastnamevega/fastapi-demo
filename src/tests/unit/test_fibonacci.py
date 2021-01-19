@@ -18,4 +18,4 @@ def test_fibonacci_less_than():
 
     with pytest.raises(ValueError) as value_error:
         fibonacci(input)
-        assert str(value_error) == f'{input} less than 0'
+        assert str(value_error) == f'{input} is less than 0'

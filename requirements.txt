@@ -1,4 +1,5 @@
-fastapi[all]
-pytest
-pylint
 autopep8
+coverage
+fastapi[all]
+pylint
+pytest
